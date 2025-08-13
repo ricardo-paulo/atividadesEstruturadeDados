@@ -1,0 +1,1 @@
+# Atividades da disciplina Estrutura de Dados - Tecnólogo em Análise e Desenvolvimento de Sistemas
