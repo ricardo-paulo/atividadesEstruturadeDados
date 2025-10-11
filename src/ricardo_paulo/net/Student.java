@@ -4,14 +4,14 @@ import java.security.InvalidParameterException;
 
 public class Student {
 
-    private final String registry;
+    private final long registry;
     private String name;
     private String address;
     private String email;
     private String phoneNumber;
     private double[] notes;
 
-    public Student(String registry, String name, String address, String email, String phoneNumber, double[] notes) {
+    public Student(long registry, String name, String address, String email, String phoneNumber, double[] notes) {
         this.registry = registry;
         this.name = name;
         this.address = address;
@@ -20,7 +20,7 @@ public class Student {
         this.notes = notes;
     }
 
-    public String getRegistry() {
+    public long getRegistry() {
         return registry;
     }
 
