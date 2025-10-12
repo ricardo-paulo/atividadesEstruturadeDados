@@ -62,6 +62,9 @@ public class Main {
                 }
             }
 
+            // TODO Substituir a inserção da matrícula manual por uma criação automática da matrícula
+            //  pelo sistema (novo registro = ano atual + students.length). students.length terá a formatação
+            //  de quatro dígitos, caso o número de estudantes não alcance 4 dígitos o restante deverá ser preenchido.
             System.out.print("Insira a matrícula do aluno: ");
             long registry = scanner.nextLong();
             scanner = new Scanner(System.in);
@@ -77,38 +80,50 @@ public class Main {
             Student newStudent = new Student(registry, name, address, email, phoneNumber);
 
             // Busca por registros de matrícula e email duplicados.
-            if (Search.binarySearch(students, registry).getRegistry() != -1)
+            if (Search.binarySearch(students, registry).getRegistry() != -1) {
                 throw new InvalidParameterException("A matrícula já existe!");
-            if (Search.sequentialSearch(students, email).getRegistry() != -1)
+            }
+            if (Search.sequentialSearch(students, email).getRegistry() != -1) {
                 throw new InvalidParameterException("O email inserido já existe!");
+            }
 
             students[students.length - 1] = newStudent;
         } else {
-            // TODO Substituir a inserção da matrícula manual por uma criação automática da matrícula
-            //  pelo sistema (novo registro = ano atual + students.length). students.length terá a formatação
-            //  de quatro dígitos, caso o número de estudantes não alcance 4 dígitos o restante deverá ser preenchido.
             System.out.print("Insira a matrícula do aluno: ");
             long studentRegistry = scanner.nextLong();
-            double[] english = SchoolReport.requestNotes("Inglês");
-            double[] math = SchoolReport.requestNotes("Matemática");
-            double[] history = SchoolReport.requestNotes("História");
-            double[] geography = SchoolReport.requestNotes("Geografia");
-            double[] physics = SchoolReport.requestNotes("Física");
-            double[] chemistry = SchoolReport.requestNotes("Química");
-            double[] biology = SchoolReport.requestNotes("Biologia");
-            double[] science = SchoolReport.requestNotes("Ciências");
-            double[] philosophy = SchoolReport.requestNotes("Filosofia");
-            double[] physicalEducation = SchoolReport.requestNotes("Educação Física");
-            SchoolReport studentSchoolReport = new SchoolReport(english, math, history, geography, physics,
-                    chemistry, biology, science, philosophy, physicalEducation);
-
             Student student = Search.binarySearch(students, studentRegistry);
-
-            // Busca por estudantes inexistentes e boletins duplicados.
-            if (student.getRegistry() == -1)
+            if (student.getRegistry() == -1) {
                 throw new InvalidParameterException("A matrícula inserida não está registrada!");
-            if (student.getSchoolReport() != null)
+            }
+            // Busca por boletins duplicados.
+            if (student.getSchoolReport() != null) {
                 throw new InvalidParameterException("O aluno já possui um boletim vinculado!");
+            }
+
+            SchoolReport studentSchoolReport = new SchoolReport();
+            System.out.println("Deixe a linha vazia para encerrar a coleta de notas.");
+
+            do {
+                Scanner notesScanner = new Scanner(System.in);
+                double[] notes = new double[4];
+
+                System.out.println("Insira a disciplina:");
+                String discipline = notesScanner.nextLine();
+
+                if (discipline.isEmpty()) {
+                    break;
+                }
+
+                for (int i = 0; i < 4; i++) {
+                    System.out.printf("Insira a %dª nota da disciplina %s: ", i + 1, discipline);
+                    double note = notesScanner.nextDouble();
+                    if (note < 0 || note > 10)
+                        throw new InvalidParameterException("A nova inserida é inválida!");
+                    notes[i] = note;
+                }
+
+                studentSchoolReport.addNoteSet(discipline, notes);
+            } while (true);
 
             student.setSchoolReport(studentSchoolReport);
         }
@@ -138,7 +153,7 @@ public class Main {
         scanner = new Scanner(System.in);
 
         if (subOption == 1) {
-            System.out.print("Insira a matrícula do aluno:");
+            System.out.print("Insira a matrícula do aluno: ");
             long studentRegistry = scanner.nextLong();
             Student result = Search.binarySearch(students, studentRegistry);
 
