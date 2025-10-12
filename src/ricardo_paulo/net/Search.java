@@ -34,6 +34,27 @@ public class Search {
         return new Student();
     }
 
+    public static Student sequentialSearch (Student[] students, String name, boolean strict) {
+
+        for (Student student : students) {
+            try {
+                if (strict) {
+                    if (student.getName().equals(name))
+                        return student;
+                } else {
+                    if (student.getName().contains(name))
+                        return student;
+                }
+            } catch (Exception e) {
+                if (e.getCause() == null) {
+                    return new Student();
+                }
+            }
+        }
+
+        return new Student();
+    }
+
     public static Student binarySearch (Student[] students, long registry) {
         int start = 0;
         int finish = students.length - 1;
