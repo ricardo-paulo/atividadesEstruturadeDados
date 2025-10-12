@@ -79,4 +79,14 @@ public class SchoolReport {
         disciplines[disciplines.length - 1] = discipline;
         this.notes[this.notes.length - 1] = notes;
     }
+
+    public void showSchoolReport() {
+        System.out.println("Notas:");
+        for (int j = 0; j < disciplines.length; j++) {
+            System.out.printf("""
+                        %s: %.2f, %.2f, %.2f, %.2f
+                    
+                    """, disciplines[j], notes[j][0], notes[j][1], notes[j][2], notes[j][3]);
+        }
+    }
 }

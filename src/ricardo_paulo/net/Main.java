@@ -145,10 +145,11 @@ public class Main {
         if (subOption == 0)
             return;
 
-        // TODO Perguntar ao usuário se deseja incluir o boletim ou não.
-
         if (subOption < 1 || subOption > 6)
             throw new InvalidParameterException("Opção inválida!");
+
+        System.out.print("Deseja que o boletim do aluno seja exibido (true ou false)? ");
+        boolean includeReport = scanner.nextBoolean();
 
         scanner = new Scanner(System.in);
 
@@ -161,6 +162,8 @@ public class Main {
                 System.out.printf("Aluno de matrícula %d não foi encontrado.\n", studentRegistry);
             } else {
                 result.showStudentInfo();
+                if (includeReport)
+                    result.getSchoolReport().showSchoolReport();
             }
         }
 
@@ -178,6 +181,8 @@ public class Main {
                 System.out.printf("Aluno de nome %s não foi encontrado.\n", studentName);
             } else {
                 result.showStudentInfo();
+                if (includeReport)
+                    result.getSchoolReport().showSchoolReport();
             }
         }
 
@@ -190,6 +195,8 @@ public class Main {
                 System.out.printf("Aluno de email %s não foi encontrado.\n", studentEmail);
             } else {
                 result.showStudentInfo();
+                if (includeReport)
+                    result.getSchoolReport().showSchoolReport();
             }
         }
 
@@ -206,6 +213,8 @@ public class Main {
             Student[] orderedStudents = SortingMethods.selectionSort(students, reverseAlphabetical);
             for (Student student : orderedStudents) {
                 student.showStudentInfo();
+                if (includeReport)
+                    student.getSchoolReport().showSchoolReport();
             }
         }
     }
