@@ -1,6 +1,8 @@
 package ricardo_paulo.net;
 
 import java.security.InvalidParameterException;
+import java.text.DecimalFormat;
+import java.time.LocalDate;
 import java.util.Scanner;
 
 public class Main {
@@ -62,11 +64,12 @@ public class Main {
                 }
             }
 
-            // TODO Substituir a inserção da matrícula manual por uma criação automática da matrícula
-            //  pelo sistema (novo registro = ano atual + students.length). students.length terá a formatação
-            //  de quatro dígitos, caso o número de estudantes não alcance 4 dígitos o restante deverá ser preenchido.
-            System.out.print("Insira a matrícula do aluno: ");
-            long registry = scanner.nextLong();
+            // Obtêm o ano atual e o tamanho formatado da lista de alunos para criar a matrícula.
+            DecimalFormat decimalFormat = new DecimalFormat("0000");
+            String thisDate = String.valueOf(LocalDate.now().getYear());
+            String sRegistry = thisDate + decimalFormat.format(students.length);
+            long registry = Long.parseLong(sRegistry);
+
             scanner = new Scanner(System.in);
             System.out.print("Insira o nome do aluno: ");
             String name = scanner.nextLine();
@@ -87,6 +90,7 @@ public class Main {
                 throw new InvalidParameterException("O email inserido já existe!");
             }
 
+            System.out.printf("Matrícula do aluno: %d\n", registry);
             students[students.length - 1] = newStudent;
         } else {
             System.out.print("Insira a matrícula do aluno: ");
@@ -163,7 +167,12 @@ public class Main {
             } else {
                 result.showStudentInfo();
                 if (includeReport)
-                    result.getSchoolReport().showSchoolReport();
+                    try {
+                        result.getSchoolReport().showSchoolReport();
+                    } catch (Exception e) {
+                        if (e.getCause() == null)
+                            System.out.println("Aluno não possui boletim!");
+                    }
             }
         }
 
@@ -182,7 +191,12 @@ public class Main {
             } else {
                 result.showStudentInfo();
                 if (includeReport)
-                    result.getSchoolReport().showSchoolReport();
+                    try {
+                        result.getSchoolReport().showSchoolReport();
+                    } catch (Exception e) {
+                        if (e.getCause() == null)
+                            System.out.println("Aluno não possui boletim!");
+                    }
             }
         }
 
@@ -196,7 +210,12 @@ public class Main {
             } else {
                 result.showStudentInfo();
                 if (includeReport)
-                    result.getSchoolReport().showSchoolReport();
+                    try {
+                        result.getSchoolReport().showSchoolReport();
+                    } catch (Exception e) {
+                        if (e.getCause() == null)
+                            System.out.println("Aluno não possui boletim!");
+                    }
             }
         }
 
@@ -214,7 +233,12 @@ public class Main {
             for (Student student : orderedStudents) {
                 student.showStudentInfo();
                 if (includeReport)
-                    student.getSchoolReport().showSchoolReport();
+                    try {
+                        student.getSchoolReport().showSchoolReport();
+                    } catch (Exception e) {
+                        if (e.getCause() == null)
+                            System.out.println("Aluno não possui boletim!");
+                    }
             }
         }
     }
