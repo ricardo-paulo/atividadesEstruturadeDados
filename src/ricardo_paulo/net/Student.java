@@ -9,24 +9,23 @@ public class Student {
     private String address;
     private String email;
     private String phoneNumber;
-    private double[] notes;
+    private SchoolReport schoolReport;
 
     public Student() {
         this.registry = -1;
         this.name = "";
         this.address = "";
-        email = "";
-        phoneNumber = "";
-        this.notes = new double[]{};
+        this.email = "";
+        this.phoneNumber = "";
+        this.schoolReport = new SchoolReport();
     }
 
-    public Student(long registry, String name, String address, String email, String phoneNumber, double[] notes) {
+    public Student(long registry, String name, String address, String email, String phoneNumber) {
         this.registry = registry;
         this.name = name;
         this.address = address;
         setEmail(email);
         setPhoneNumber(phoneNumber);
-        this.notes = notes;
     }
 
     public long getRegistry() {
@@ -85,24 +84,11 @@ public class Student {
         }
     }
 
-    public double[] getNotes() {
-        return notes;
+    public SchoolReport getNotes() {
+        return schoolReport;
     }
 
-    public void setNotes(double[] notes) {
-
-        boolean isAllPositive = true;
-
-        for (int n = 0; n < notes.length; n++) {
-            if (notes[n] < 0)
-                isAllPositive = false;
-        }
-
-        if (isAllPositive) {
-            this.notes = notes;
-        } else {
-            throw new InvalidParameterException("Uma ou mais notas inseridas são inválidas!");
-        }
-
+    public void setNotes(SchoolReport report) {
+        this.schoolReport = report;
     }
 }

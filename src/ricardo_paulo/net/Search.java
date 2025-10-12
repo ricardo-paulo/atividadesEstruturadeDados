@@ -2,7 +2,7 @@ package ricardo_paulo.net;
 
 public class Search {
 
-    public static Student sequentialSearch (Student[] students, int target) {
+    public static Student sequentialSearch (Student[] students, long target) {
 
         for (int i = 0; i < students.length; i++) {
             if (students[i].getRegistry() == target)
@@ -12,7 +12,7 @@ public class Search {
         return new Student();
     }
 
-    public static Student binarySearch (Student[] students, int target) {
+    public static Student binarySearch (Student[] students, long target) {
         int start = 0;
         int finish = students.length - 1;
 
