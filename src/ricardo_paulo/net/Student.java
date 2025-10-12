@@ -84,11 +84,11 @@ public class Student {
         }
     }
 
-    public SchoolReport getNotes() {
+    public SchoolReport getSchoolReport() {
         return schoolReport;
     }
 
-    public void setNotes(SchoolReport report) {
+    public void setSchoolReport(SchoolReport report) {
         this.schoolReport = report;
     }
 }

@@ -50,6 +50,7 @@ public class Main {
             throw new InvalidParameterException("Opção inválida!");
 
         if (subOption == 1) {
+            // Incrementa o tamanho da lista de estudantes.
             if (students[0] != null) {
                 Student[] temp = students.clone();
                 students = new Student[temp.length + 1];
@@ -70,7 +71,15 @@ public class Main {
             System.out.print("Insira o número de telefone (com DDD): ");
             String phoneNumber = scanner.nextLine();
 
-            students[students.length - 1] = new Student(registry, name, address, email, phoneNumber);
+            Student newStudent = new Student(registry, name, address, email, phoneNumber);
+
+            // Busca por registros de matrícula e email duplicados.
+            if (Search.binarySearch(students, registry).equals(new Student()))
+                throw new InvalidParameterException("A matrícula já existe!");
+            if (Search.sequentialSearch(students, email).equals(new Student()))
+                throw new InvalidParameterException("O email inserido já existe!");
+
+            students[students.length - 1] = newStudent;
         } else {
             System.out.print("Insira a matrícula do aluno: ");
             long studentRegistry = scanner.nextLong();
@@ -88,7 +97,14 @@ public class Main {
                     chemistry, biology, science, philosophy, physicalEducation);
 
             Student student = Search.binarySearch(students, studentRegistry);
-            student.setNotes(studentSchoolReport);
+
+            // Busca por estudantes inexistentes e boletins duplicados.
+            if (student.equals(new Student()))
+                throw new InvalidParameterException("A matrícula inserida não está registrada!");
+            if (!student.getSchoolReport().equals(new SchoolReport()))
+                throw new InvalidParameterException("O aluno já possui um boletim vinculado!");
+
+            student.setSchoolReport(studentSchoolReport);
         }
     }
 
