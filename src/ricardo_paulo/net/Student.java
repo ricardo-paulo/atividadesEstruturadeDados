@@ -91,4 +91,14 @@ public class Student {
     public void setSchoolReport(SchoolReport report) {
         this.schoolReport = report;
     }
+
+    public void showStudentInfo() {
+        System.out.printf("""
+                Matrícula: %d
+                Nome: %s
+                Endereço: %s
+                Email: %s
+                Telefone: %s
+                """, registry, name, address, email, phoneNumber);
+    }
 }

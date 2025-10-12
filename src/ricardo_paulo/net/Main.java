@@ -23,7 +23,7 @@ public class Main {
             switch (option) {
                 case 1: register();
                     break;
-                case 2: System.out.println(search());
+                case 2: search();
                     break;
                 case 3: update();
                     break;
@@ -43,8 +43,11 @@ public class Main {
     private static void register () {
 
         Scanner scanner = new Scanner(System.in);
-        System.out.println("1 - Aluno\n2 - Boletim");
+        System.out.println("1 - Aluno\n2 - Boletim\n0 - Voltar");
         int subOption = scanner.nextInt();
+
+        if (subOption == 0)
+            return;
 
         if (subOption != 1 && subOption != 2)
             throw new InvalidParameterException("Opção inválida!");
@@ -74,13 +77,16 @@ public class Main {
             Student newStudent = new Student(registry, name, address, email, phoneNumber);
 
             // Busca por registros de matrícula e email duplicados.
-            if (Search.binarySearch(students, registry).equals(new Student()))
+            if (Search.binarySearch(students, registry).getRegistry() != -1)
                 throw new InvalidParameterException("A matrícula já existe!");
-            if (Search.sequentialSearch(students, email).equals(new Student()))
+            if (Search.sequentialSearch(students, email).getRegistry() != -1)
                 throw new InvalidParameterException("O email inserido já existe!");
 
             students[students.length - 1] = newStudent;
         } else {
+            // TODO Substituir a inserção da matrícula manual por uma criação automática da matrícula
+            //  pelo sistema (novo registro = ano atual + students.length). students.length terá a formatação
+            //  de quatro dígitos, caso o número de estudantes não alcance 4 dígitos o restante deverá ser preenchido.
             System.out.print("Insira a matrícula do aluno: ");
             long studentRegistry = scanner.nextLong();
             double[] english = SchoolReport.requestNotes("Inglês");
@@ -99,9 +105,9 @@ public class Main {
             Student student = Search.binarySearch(students, studentRegistry);
 
             // Busca por estudantes inexistentes e boletins duplicados.
-            if (student.equals(new Student()))
+            if (student.getRegistry() == -1)
                 throw new InvalidParameterException("A matrícula inserida não está registrada!");
-            if (!student.getSchoolReport().equals(new SchoolReport()))
+            if (student.getSchoolReport() != null)
                 throw new InvalidParameterException("O aluno já possui um boletim vinculado!");
 
             student.setSchoolReport(studentSchoolReport);
@@ -109,9 +115,84 @@ public class Main {
     }
 
     // Paulo
-    private static String search () {
+    private static void search () {
 
-        return "";
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("""
+                1 - Busca por matrícula
+                2 - Busca por nome
+                3 - Busca por email
+                4 - Todos (Ordem de inserção)
+                5 - Todos (Ordem alfabética)
+                0 - Voltar""");
+        int subOption = scanner.nextInt();
+
+        if (subOption == 0)
+            return;
+
+        // TODO Perguntar ao usuário se deseja incluir o boletim ou não.
+
+        if (subOption < 1 || subOption > 6)
+            throw new InvalidParameterException("Opção inválida!");
+
+        scanner = new Scanner(System.in);
+
+        if (subOption == 1) {
+            System.out.print("Insira a matrícula do aluno:");
+            long studentRegistry = scanner.nextLong();
+            Student result = Search.binarySearch(students, studentRegistry);
+
+            if (result.getRegistry() == -1) {
+                System.out.printf("Aluno de matrícula %d não foi encontrado.\n", studentRegistry);
+            } else {
+                result.showStudentInfo();
+            }
+        }
+
+        if (subOption == 2){
+            System.out.print("Insira o nome completo do aluno: ");
+            String studentName = scanner.nextLine();
+            System.out.print("""
+                    Deseja uma comparação estrita (true ou false)?
+                    Utilizando comparação estrita a pesquisa será realizada para um nome exatamente igual ao inserido.
+                    """);
+            boolean strict = scanner.nextBoolean();
+            Student result = Search.sequentialSearch(students, studentName, strict);
+
+            if (result.getRegistry() == -1) {
+                System.out.printf("Aluno de nome %s não foi encontrado.\n", studentName);
+            } else {
+                result.showStudentInfo();
+            }
+        }
+
+        if (subOption == 3) {
+            System.out.print("Insira o email do aluno: ");
+            String studentEmail = scanner.nextLine();
+            Student result = Search.sequentialSearch(students, studentEmail);
+
+            if (result.getRegistry() == -1) {
+                System.out.printf("Aluno de email %s não foi encontrado.\n", studentEmail);
+            } else {
+                result.showStudentInfo();
+            }
+        }
+
+        if (subOption == 4) {
+            for (Student student : students) {
+                student.showStudentInfo();
+            }
+        }
+
+        if (subOption == 5) {
+            System.out.print("Ordem alfabética invérsa (true ou false)? ");
+            boolean reverseAlphabetical = scanner.nextBoolean();
+
+            Student[] orderedStudents = SortingMethods.selectionSort(students, reverseAlphabetical);
+            for (Student student : orderedStudents) {
+                student.showStudentInfo();
+            }
+        }
     }
 
     // Arthur
