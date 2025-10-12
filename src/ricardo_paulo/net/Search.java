@@ -31,9 +31,9 @@ public class Search {
         while (start <= finish) {
             int middle = (finish + start) / 2;
 
-            if (students[middle].getRegistry() == target) {
+            if (students[middle].getRegistry() == registry) {
                 return students[middle];
-            } else if (students[middle].getRegistry() < target) {
+            } else if (students[middle].getRegistry() < registry) {
                 start = middle + 1;
             } else {
                 finish = middle - 1;
