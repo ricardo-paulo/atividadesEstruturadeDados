@@ -1,18 +1,30 @@
 package ricardo_paulo.net;
 
+import java.util.Objects;
+
 public class Search {
 
-    public static Student sequentialSearch (Student[] students, long target) {
+    public static Student sequentialSearch (Student[] students, long registry) {
 
         for (int i = 0; i < students.length; i++) {
-            if (students[i].getRegistry() == target)
+            if (students[i].getRegistry() == registry)
                 return students[i];
         }
 
         return new Student();
     }
 
-    public static Student binarySearch (Student[] students, long target) {
+    public static Student sequentialSearch (Student[] students, String email) {
+
+        for (int i = 0; i < students.length; i++) {
+            if (students[i].getEmail().equals(email))
+                return students[i];
+        }
+
+        return new Student();
+    }
+
+    public static Student binarySearch (Student[] students, long registry) {
         int start = 0;
         int finish = students.length - 1;
 
