@@ -1,14 +1,18 @@
 package ricardo_paulo.net;
 
-import java.util.Objects;
-
 public class Search {
 
     public static Student sequentialSearch (Student[] students, long registry) {
 
-        for (int i = 0; i < students.length; i++) {
-            if (students[i].getRegistry() == registry)
-                return students[i];
+        for (Student student : students) {
+            try {
+                if (student.getRegistry() == registry)
+                    return student;
+            } catch (Exception e) {
+                if (e.getCause() == null) {
+                    return new Student();
+                }
+            }
         }
 
         return new Student();
@@ -16,9 +20,15 @@ public class Search {
 
     public static Student sequentialSearch (Student[] students, String email) {
 
-        for (int i = 0; i < students.length; i++) {
-            if (students[i].getEmail().equals(email))
-                return students[i];
+        for (Student student : students) {
+            try {
+                if (student.getEmail().equals(email))
+                    return student;
+            } catch (Exception e) {
+                if (e.getCause() == null) {
+                    return new Student();
+                }
+            }
         }
 
         return new Student();
@@ -31,12 +41,18 @@ public class Search {
         while (start <= finish) {
             int middle = (finish + start) / 2;
 
-            if (students[middle].getRegistry() == registry) {
-                return students[middle];
-            } else if (students[middle].getRegistry() < registry) {
-                start = middle + 1;
-            } else {
-                finish = middle - 1;
+            try {
+                if (students[middle].getRegistry() == registry) {
+                    return students[middle];
+                } else if (students[middle].getRegistry() < registry) {
+                    start = middle + 1;
+                } else {
+                    finish = middle - 1;
+                }
+            } catch (Exception e) {
+                if (e.getCause() == null) {
+                    return new Student();
+                }
             }
         }
 
