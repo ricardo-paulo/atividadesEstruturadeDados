@@ -41,7 +41,6 @@ public class Main {
         System.out.println("Programa finalizado.");
     }
 
-    // Paulo
     private static void register () {
 
         Scanner scanner = new Scanner(System.in);
@@ -133,7 +132,6 @@ public class Main {
         }
     }
 
-    // Paulo
     private static void search () {
 
         Scanner scanner = new Scanner(System.in);
@@ -243,12 +241,114 @@ public class Main {
         }
     }
 
-    // Arthur
+    // Arthur Borges:
     private static void update () {
 
+        Scanner src = new Scanner(System.in);
+        System.out.println("1 - Editar Aluno\n2 - Editar boletin\n0 - Voltar");
+        int subOption = src.nextInt();
+        src.nextLine();
+
+        if (subOption == 0)
+            return;
+
+        if (subOption == 1) {
+            System.out.print("Informe a matríccula: ");
+            long registry = src.nextLong();
+            src.nextLine();
+
+            Student student = Search.binarySearch(students, registry);
+            if (student.getRegistry() == -1) {
+                System.out.println("Aluno não encontrado!");
+                return;
+            }
+
+            System.out.println("Editar (1) Nome, (2) Endereço, (3) Email, (4) Telefone");
+            int field = src.nextInt();
+            src.nextLine();
+
+            switch (field) {
+
+                case 1:
+                    System.out.print("Novo nome:");
+                    student.setName(src.nextLine());
+                    break;
+
+                case 2:
+                    System.out.print("Novo Endereço:");
+                    student.setAddress(src.nextLine());
+                    break;
+
+                case 3:
+                    System.out.print("Novo Email: ");
+                    student.setEmail(src.nextLine());
+                    break;
+
+                case 4:
+                    System.out.print("Novo telefone");
+                    student.setPhoneNumber(src.nextLine());
+                    break;
+
+                default:
+                    System.out.println("Opção inválida");
+                    return;
+            }
+
+            System.out.println("Informações atualizadas com sucesso!");
+
+        } else if (subOption == 2) {
+            System.out.println("Informe a matrícula do aluno: ");
+            long registry = src.nextLong();
+            src.nextLine();
+
+            Student student = Search.binarySearch(students, registry);
+            if (student.getRegistry() == -1) {
+                System.out.println("Aluno não encontrado!");
+                return;
+            }
+
+            if (student.getSchoolReport() == null) {
+                System.out.println("Este aluno não possui boletim no sistema!");
+                return;
+
+            }
+
+            System.out.print("Indorme o nome da disciplina que deseja editar:");
+            String discipline = src.nextLine();
+
+            double[] notes = student.getSchoolReport().getNotes(discipline);
+            if (notes == null) {
+                System.out.println("Disciplina não encontrada!");
+                return;
+            }
+
+            System.out.println("Notas atuais:");
+            for (int i = 0; i < notes.length; i++) {
+                System.out.printf("%dª nota: %.2f\n", i + 1, notes[i]);
+            }
+
+            System.out.println("Qual nota deseja alterar (1 a 4)?");
+            int pos = src.nextInt();
+            if (pos < 4) {
+                System.out.println("Posição inválida!");
+                return;
+            }
+
+            System.out.println("Nova nota: ");
+            double novaNota = src.nextDouble();
+            if (novaNota < 0 || novaNota > 10) {
+                System.out.println("Nota inválida!");
+                return;
+            }
+
+            notes[pos - 1] = novaNota;
+            student.getSchoolReport().updateNotes(discipline, notes);
+
+            System.out.println("Boletim atualizado com sucesso!");
+        }
     }
 
-    // Jackson
+    // Jackson Alves:
     private static void delete () {
 
     }

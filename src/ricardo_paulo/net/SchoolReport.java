@@ -89,4 +89,13 @@ public class SchoolReport {
                     """, disciplines[j], notes[j][0], notes[j][1], notes[j][2], notes[j][3]);
         }
     }
+
+    // Arthur Borges:
+    public double[] getNotes(String discipline) {
+        return null;
+    }
+
+    public void updateNotes(String discipline, double[] novaNota) {
+
+    }
 }
