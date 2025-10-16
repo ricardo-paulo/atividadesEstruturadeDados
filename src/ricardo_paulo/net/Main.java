@@ -349,7 +349,55 @@ public class Main {
     }
 
     // Jackson Alves:
-    private static void delete () {
+    private static void delete() {
+    Scanner scanner = new Scanner(System.in);
+    System.out.println("1 - Excluir Aluno\n2 - Excluir Boletim\n0 - Volta");
+    int subOption = scanner.nextInt();
+    scanner.nextLine(); // Consome a quebra de linha após nextInt()
 
+    if (subOption == 0)
+        return;
+
+    if (subOption == 1) {
+            System.out.print("Informe a matrícula do aluno: ");
+            long registry = scanner.nextLong();
+            scanner.nextLine(); // Consome a quebra de linha após nextLong()
+
+            Student student = Search.binarySearch(students, registry);
+            if (student.getRegistry() == -1) {
+                System.out.println("Aluno não encontrado!");
+                return;
+            }
+
+            Student[] temp = new Student[students.length - 1];
+            for (int i = 0, j = 0; i < students.length; i++) {
+                if (students[i].getRegistry() != student.getRegistry()) {
+                    temp[j++] = students[i];
+                }
+            }
+            students = temp;
+
+            System.out.println("Aluno removido com sucesso!");
+        } else if (subOption == 2) {
+            System.out.print("Informe a matrícula do aluno: ");
+            long registry = scanner.nextLong();
+            scanner.nextLine(); // Consome a quebra de linha após nextLong()
+
+            Student student = Search.binarySearch(students, registry);
+            if (student.getRegistry() == -1) {
+                System.out.println("Aluno não encontrado!");
+                return;
+            }
+
+            if (student.getSchoolReport() == null) {
+                System.out.println("Este aluno não possui boletim no sistema!");
+                return;
+            }
+
+            student.setSchoolReport(null);
+            System.out.println("Boletim removido com sucesso!");
+        } else {
+            System.out.println("Opção inválida!");
+        }
     }
 }
