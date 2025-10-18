@@ -3,6 +3,7 @@ package ricardo_paulo.net;
 import java.security.InvalidParameterException;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class Main {
@@ -141,6 +142,7 @@ public class Main {
                 3 - Busca por email
                 4 - Todos (Ordem de inserção)
                 5 - Todos (Ordem alfabética)
+                6 - Ranking
                 0 - Voltar""");
         int subOption = scanner.nextInt();
 
@@ -234,11 +236,72 @@ public class Main {
                     try {
                         student.getSchoolReport().showSchoolReport();
                     } catch (Exception e) {
-                        if (e.getCause() == null)
+                        if (e.getCause() == null) {
                             System.out.println("Aluno não possui boletim!");
+                        }
                     }
             }
         }
+        if (subOption == 6) {
+            double[] finalAvgStudents = new double[students.length];
+
+            for (int s = 0; s < students.length; s++) {
+                try {
+                    finalAvgStudents[s] = students[s].getSchoolReport().getFinalAverage();
+                } catch (Exception e) {
+                    finalAvgStudents[s] = 0;
+                }
+            }
+
+            System.out.print("Deseja que a classificação ocorra em ordem decrescente (true ou false)? ");
+            boolean betterNoteFirst = scanner.nextBoolean();
+
+            if (betterNoteFirst) {
+                int betterNoteIndex = 0;
+                int position = 1;
+                for (int s = 0; s < finalAvgStudents.length; s++) {
+                    // Obter o index da melhor média.
+                    for (int n = 0; n < finalAvgStudents.length; n++) {
+                        if (finalAvgStudents[n] > finalAvgStudents[betterNoteIndex])
+                            betterNoteIndex = n;
+                    }
+                    // Exibir o aluno com maior média da lista.
+                    System.out.printf("""
+                        Aluno: %s
+                        Média Final: %.2f
+                        Posição: %dº lugar
+                    """, students[betterNoteIndex].getName(), finalAvgStudents[betterNoteIndex], position);
+                    if (includeReport)
+                        students[betterNoteIndex].showStudentInfo();
+                    position++;
+                    System.out.println(Arrays.toString(finalAvgStudents));
+
+                    finalAvgStudents[betterNoteIndex] = -1;
+                }
+            } else {
+                int worseNoteIndex = 0;
+                int position = finalAvgStudents.length;
+                for (int s = 0; s < finalAvgStudents.length; s++) {
+                    // Obter o index da pior média.
+                    for (int n = 0; n < finalAvgStudents.length; n++) {
+                        if (finalAvgStudents[n] < finalAvgStudents[worseNoteIndex])
+                            worseNoteIndex = n;
+                    }
+                    // Exibir o aluno com maior média da lista.
+                    System.out.printf("""
+                        Aluno: %s
+                        Média Final: %.2f
+                        Posição: %dº lugar
+                    """, students[worseNoteIndex].getName(), finalAvgStudents[worseNoteIndex], position);
+                    if (includeReport)
+                        students[worseNoteIndex].showStudentInfo();
+                    position--;
+
+                    finalAvgStudents[worseNoteIndex] = 11;
+                }
+            }
+        }
+
     }
 
     // Arthur Borges:

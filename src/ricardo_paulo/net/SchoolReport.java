@@ -83,11 +83,23 @@ public class SchoolReport {
     public void showSchoolReport() {
         System.out.println("Notas:");
         for (int j = 0; j < disciplines.length; j++) {
+            double avgDiscipline = (notes[j][0] + notes[j][1] + notes[j][2] + notes[j][3])/4;
             System.out.printf("""
-                        %s: %.2f, %.2f, %.2f, %.2f
+                        %s: %.2f, %.2f, %.2f, %.2f | Média: %.2f
                     
-                    """, disciplines[j], notes[j][0], notes[j][1], notes[j][2], notes[j][3]);
+                    """, disciplines[j], notes[j][0], notes[j][1], notes[j][2], notes[j][3], avgDiscipline);
         }
+    }
+
+    public double getFinalAverage() {
+        double notesSum = 0;
+        for (double[] discipline : notes) {
+            for (double note : discipline) {
+                notesSum += note;
+            }
+        }
+
+        return notesSum / (notes.length * 4);
     }
 
     // Arthur Borges:
