@@ -308,15 +308,16 @@ public class Main {
     private static void update () {
 
         Scanner src = new Scanner(System.in);
-        System.out.println("1 - Editar Aluno\n2 - Editar boletin\n0 - Voltar");
+        System.out.println("1 - Editar Aluno\n2 - Editar Boletim\n0 - Voltar");
         int subOption = src.nextInt();
         src.nextLine();
 
         if (subOption == 0)
             return;
 
+
         if (subOption == 1) {
-            System.out.print("Informe a matríccula: ");
+            System.out.print("Informe a matrícula: ");
             long registry = src.nextLong();
             src.nextLine();
 
@@ -326,41 +327,42 @@ public class Main {
                 return;
             }
 
-            System.out.println("Editar (1) Nome, (2) Endereço, (3) Email, (4) Telefone");
+            System.out.println("Escolha o campo que deseja editar:");
+            System.out.println("1 - Nome\n2 - Endereço\n3 - Email\n4 - Telefone");
             int field = src.nextInt();
             src.nextLine();
 
             switch (field) {
-
                 case 1:
-                    System.out.print("Novo nome:");
+                    System.out.print("Novo nome: ");
                     student.setName(src.nextLine());
                     break;
 
                 case 2:
-                    System.out.print("Novo Endereço:");
+                    System.out.print("Novo endereço: ");
                     student.setAddress(src.nextLine());
                     break;
 
                 case 3:
-                    System.out.print("Novo Email: ");
+                    System.out.print("Novo email: ");
                     student.setEmail(src.nextLine());
                     break;
 
                 case 4:
-                    System.out.print("Novo telefone");
+                    System.out.print("Novo telefone: ");
                     student.setPhoneNumber(src.nextLine());
                     break;
 
                 default:
-                    System.out.println("Opção inválida");
+                    System.out.println("Opção inválida!");
                     return;
             }
 
-            System.out.println("Informações atualizadas com sucesso!");
+            System.out.println("Informações do aluno atualizadas com sucesso!");
+
 
         } else if (subOption == 2) {
-            System.out.println("Informe a matrícula do aluno: ");
+            System.out.print("Informe a matrícula do aluno: ");
             long registry = src.nextLong();
             src.nextLine();
 
@@ -373,12 +375,29 @@ public class Main {
             if (student.getSchoolReport() == null) {
                 System.out.println("Este aluno não possui boletim no sistema!");
                 return;
-
             }
 
-            System.out.print("Indorme o nome da disciplina que deseja editar:");
-            String discipline = src.nextLine();
+            String[] disciplines = student.getSchoolReport().getDisciplines();
+            if (disciplines == null || disciplines.length == 0) {
+                System.out.println("Nenhuma disciplina cadastrada!");
+                return;
+            }
 
+            System.out.println("Disciplinas cadastradas:");
+            for (int i = 0; i < disciplines.length; i++) {
+                System.out.printf("%d - %s\n", i + 1, disciplines[i]);
+            }
+
+            System.out.print("Selecione o número da disciplina que deseja editar: ");
+            int choice = src.nextInt();
+            src.nextLine();
+
+            if (choice < 1 || choice > disciplines.length) {
+                System.out.println("Opção inválida!");
+                return;
+            }
+
+            String discipline = disciplines[choice - 1];
             double[] notes = student.getSchoolReport().getNotes(discipline);
             if (notes == null) {
                 System.out.println("Disciplina não encontrada!");
@@ -390,14 +409,15 @@ public class Main {
                 System.out.printf("%dª nota: %.2f\n", i + 1, notes[i]);
             }
 
-            System.out.println("Qual nota deseja alterar (1 a 4)?");
+
+            System.out.print("Qual nota deseja alterar (1 a 4)? ");
             int pos = src.nextInt();
-            if (pos < 4) {
+            if (pos < 1 || pos > notes.length) {
                 System.out.println("Posição inválida!");
                 return;
             }
 
-            System.out.println("Nova nota: ");
+            System.out.print("Nova nota: ");
             double novaNota = src.nextDouble();
             if (novaNota < 0 || novaNota > 10) {
                 System.out.println("Nota inválida!");
@@ -405,9 +425,13 @@ public class Main {
             }
 
             notes[pos - 1] = novaNota;
-            student.getSchoolReport().updateNotes(discipline, notes);
 
-            System.out.println("Boletim atualizado com sucesso!");
+            boolean atualizado = student.getSchoolReport().updateNotes(discipline, notes);
+
+            if (atualizado)
+                System.out.println("Boletim atualizado com sucesso!");
+            else
+                System.out.println("Erro ao atualizar notas!");
         }
     }
 

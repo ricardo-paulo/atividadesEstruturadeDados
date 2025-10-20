@@ -104,10 +104,25 @@ public class SchoolReport {
 
     // Arthur Borges:
     public double[] getNotes(String discipline) {
+        for (int i = 0; i < disciplines.length; i++) {
+            if (disciplines[i].equalsIgnoreCase(discipline)) {
+                return notes[i];
+            }
+        }
         return null;
     }
 
-    public void updateNotes(String discipline, double[] novaNota) {
 
+    public boolean updateNotes(String discipline, double[] novaNota) {
+        for (int i = 0; i < disciplines.length; i++) {
+            if (disciplines[i].equalsIgnoreCase(discipline)) {
+                if (novaNota.length != periods) {
+                    return false;
+                }
+                notes[i] = novaNota;
+                return true;
+            }
+        }
+        return false;
     }
 }
