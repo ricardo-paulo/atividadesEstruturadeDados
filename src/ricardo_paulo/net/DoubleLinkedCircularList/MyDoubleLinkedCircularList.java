@@ -12,14 +12,6 @@ public class MyDoubleLinkedCircularList {
         length = 0;
     }
 
-    public MyDoubleLinkedCircularList(String element) {
-        this.head = new DLCNode(element);
-        this.tail = head;
-        head.next = head;
-        head.previous = head;
-        this.length = 1;
-    }
-
     public boolean isEmpty() {
         return length == 0;
     }
@@ -29,17 +21,12 @@ public class MyDoubleLinkedCircularList {
     }
 
     public DLCNode getNode(int index) {
-        if (!(index >= 0 && index < length))
-            throw new IllegalArgumentException("Index inválido!");
+        if (index < 0 || index >= length)
+            throw new IllegalArgumentException("Index inválido");
 
         DLCNode current = head;
-
-        for (int i = 0; i <= length; i++) {
-            if (i == index)
-                return current;
-
+        for (int i = 0; i < index; i++)
             current = current.next;
-        }
 
         return current;
     }
@@ -50,14 +37,15 @@ public class MyDoubleLinkedCircularList {
         if (isEmpty()) {
             head = newNode;
             tail = newNode;
+            newNode.next = newNode;
+            newNode.previous = newNode;
         } else {
-            head.previous = newNode;
+            newNode.previous = tail;
+            newNode.next = head;
             tail.next = newNode;
+            head.previous = newNode;
             tail = newNode;
         }
-
-        newNode.next = head;
-        newNode.previous = tail;
 
         length++;
     }
@@ -66,59 +54,97 @@ public class MyDoubleLinkedCircularList {
         if (index < 0 || index > length)
             throw new IllegalArgumentException("Posição inválida");
 
-        DLCNode newNode = new DLCNode(element);
-        
-        if (isEmpty()) {
+        if (index == length) {
             addNode(element);
-        } else if (index == 0) {
-            newNode.next = head;
-            newNode.previous = tail;
-            head.previous = newNode;
-            tail.next = newNode;
-            head = newNode;
-        } else {
-            DLCNode current = getNode(index);
-            newNode.next = current;
-            newNode.previous = current.previous;
-            current.previous.next = newNode;
-            current.previous = newNode;
+            return;
         }
+
+        DLCNode newNode = new DLCNode(element);
+
+        if (index == 0) {
+            if (isEmpty()) {
+                head = newNode;
+                tail = newNode;
+                newNode.next = newNode;
+                newNode.previous = newNode;
+            } else {
+                newNode.next = head;
+                newNode.previous = tail;
+                tail.next = newNode;
+                head.previous = newNode;
+                head = newNode;
+            }
+            length++;
+            return;
+        }
+
+        DLCNode current = getNode(index);
+
+        newNode.next = current;
+        newNode.previous = current.previous;
+        current.previous.next = newNode;
+        current.previous = newNode;
 
         length++;
     }
 
-    public void removeNode(String element) {
+    public String removeNode(String element) {
+        if (isEmpty())
+            return null;
+
+        if (head == tail && head.element.equals(element)) {
+            head = null;
+            tail = null;
+            length = 0;
+            return element;
+        }
+
+        if (head.element.equals(element)) {
+            head = head.next;
+            head.previous = tail;
+            tail.next = head;
+            length--;
+            return element;
+        }
+
+        if (tail.element.equals(element)) {
+            tail = tail.previous;
+            tail.next = head;
+            head.previous = tail;
+            length--;
+            return element;
+        }
+
         DLCNode current = head.next;
-        do {
+
+        while (current != tail) {
             if (current.element.equals(element)) {
-                if (current == head) {
-                    tail.next = head.next;
-                    head.next.previous = tail;
-                    head = head.next;
-                } else if (current == tail) {
-                    tail.previous.next = head;
-                    head.previous = tail.previous;
-                } else {
-                    current.previous.next = current.next;
-                    current.next.previous = current.previous;
-                }
+                current.previous.next = current.next;
+                current.next.previous = current.previous;
                 length--;
+                return element;
             }
             current = current.next;
-        } while (current != head);
+        }
+
+        return null;
     }
 
     @Override
     public String toString() {
+        if (isEmpty())
+            return "[]";
+
         StringBuilder s = new StringBuilder("[");
         DLCNode current = head;
-        while (current.next != head) {
+
+        for (int i = 0; i < length; i++) {
             s.append(current.element);
-            if (current.next != head) {
+            if (i < length - 1)
                 s.append(", ");
-            }
             current = current.next;
         }
+
         s.append("]");
         return s.toString();
     }

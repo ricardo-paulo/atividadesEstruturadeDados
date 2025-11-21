@@ -60,10 +60,17 @@ public class Main {
 
         System.out.println("Listas fundidas: " + mergeLists(list1, list2));
 
-        MyDoubleLinkedCircularList dlcList = new MyDoubleLinkedCircularList("Lara");
+        //Questão 8
+        MyDoubleLinkedCircularList dlcList = new MyDoubleLinkedCircularList();
         dlcList.addNode("Paulo");
         dlcList.addNode("Sérgio");
         dlcList.addNode("Bruna");
+        dlcList.addNode("Luana");
+        System.out.println(dlcList);
+
+        System.out.println(dlcList.getNode(2).element);
+
+        System.out.println(dlcList.removeNode("Bruna"));
         System.out.println(dlcList);
     }
 
