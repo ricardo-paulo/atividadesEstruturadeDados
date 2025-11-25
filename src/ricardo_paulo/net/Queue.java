@@ -30,6 +30,10 @@ public class Queue {
         return linkedList.isEmpty();
     }
 
+    public MyLinkedList getLinkedList() {
+        return linkedList;
+    }
+
     @Override
     public String toString() {
         return linkedList.toString();
