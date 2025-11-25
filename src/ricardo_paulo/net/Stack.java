@@ -34,6 +34,20 @@ public class Stack {
         return linkedList;
     }
 
+    public boolean equals(Stack compared) {
+        boolean isEquals = true;
+        MyLinkedList comparedLinkedList = compared.getLinkedList();
+
+        for (int i = 0; i < linkedList.getLength() - 1; i++) {
+            if (linkedList.getNodeAt(i).element != comparedLinkedList.getNodeAt(i).element) {
+                isEquals = false;
+                break;
+            };
+        }
+
+        return isEquals;
+    }
+
     @Override
     public String toString() {
         return linkedList.toString();
