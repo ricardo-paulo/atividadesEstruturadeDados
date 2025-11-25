@@ -1,6 +1,7 @@
 package ricardo_paulo.net;
 
 import ricardo_paulo.net.LinkedList.MyLinkedList;
+import ricardo_paulo.net.LinkedList.Node;
 
 public class Stack {
 
@@ -34,12 +35,24 @@ public class Stack {
         return linkedList;
     }
 
+//  Questão 4
     public boolean equals(Stack compared) {
+        if (linkedList.getLength() != compared.getLength()) {
+            return false;
+        }
+
         boolean isEquals = true;
         MyLinkedList comparedLinkedList = compared.getLinkedList();
 
         for (int i = 0; i < linkedList.getLength() - 1; i++) {
-            if (linkedList.getNodeAt(i).element != comparedLinkedList.getNodeAt(i).element) {
+
+            Node node1 = linkedList.getNodeAt(i);
+            Node node2 = comparedLinkedList.getNodeAt(i);
+
+            if (node1 == null && node2 == null)
+                break;
+
+            if (node1 == null || node2 == null || node1.element != node2.element) {
                 isEquals = false;
                 break;
             };
