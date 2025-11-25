@@ -35,7 +35,7 @@ public class Queue {
         return linkedList;
     }
 //  Questão 4
-public boolean equals(Stack compared) {
+public boolean equals(Queue compared) {
     if (linkedList.getLength() != compared.getLength()) {
         return false;
     }
