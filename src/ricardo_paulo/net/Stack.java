@@ -30,4 +30,8 @@ public class Stack {
         return linkedList.getLength();
     }
 
+    @Override
+    public String toString() {
+        return linkedList.toString();
+    }
 }
