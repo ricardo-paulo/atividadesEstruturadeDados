@@ -1,11 +1,9 @@
 package ricardo_paulo.net.LinkedList;
 
 import java.time.LocalTime;
-import java.util.Random;
 
 public class Client {
 
-    private static final Random random = new Random();
     private static long lastId = 0;
 
     public long id;
@@ -21,5 +19,15 @@ public class Client {
         this.isPreferential = isPreferential;
         this.gotInQueue = LocalTime.now();
         this.next = null;
+    }
+
+    public Client copy() {
+        Client clientCopy = new Client(this.name, this.isPreferential);
+        clientCopy.id = this.id;
+        clientCopy.gotInQueue = this.gotInQueue;
+        clientCopy.exitedInQueue = this.exitedInQueue;
+        clientCopy.next = null;
+
+        return clientCopy;
     }
 }

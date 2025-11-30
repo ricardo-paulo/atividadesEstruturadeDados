@@ -5,7 +5,7 @@ import ricardo_paulo.net.LinkedList.Client;
 
 public class Queue {
 
-    private MyLinkedList linkedList;
+    private final MyLinkedList linkedList;
 
     public Queue() {
         linkedList = new MyLinkedList();
@@ -21,8 +21,6 @@ public class Queue {
 
     public void enqueue(Client newClient) {
         linkedList.addNode(newClient, 0);
-        if (linkedList.getLength() > 20)
-            linkedList.removeNodeAt(linkedList.getLength() - 1);
     }
 
     public Client dequeue() {
@@ -64,7 +62,7 @@ public class Queue {
             if (client1 == null || client2 == null || !client1.name.equals(client2.name)) {
                 isEquals = false;
                 break;
-            };
+            }
         }
 
         return isEquals;
