@@ -3,8 +3,6 @@ package ricardo_paulo.net;
 import ricardo_paulo.net.LinkedList.MyLinkedList;
 import ricardo_paulo.net.LinkedList.Client;
 
-import java.util.concurrent.TimeUnit;
-
 public class Queue {
 
     private MyLinkedList linkedList;
@@ -14,17 +12,21 @@ public class Queue {
     }
 
     public void enqueue(String name) {
-        linkedList.addNode(name, 0);
+        linkedList.addNode(name, 0, false);
     }
 
-    public String dequeue() {
-        Client removedClient = linkedList.removeNodeAt(linkedList.getLength() - 1);
-        try {
-            TimeUnit.SECONDS.sleep(removedClient.responseTime);
-            return removedClient.name;
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
+    public void enqueue(String name, boolean isPriority) {
+        linkedList.addNode(name, 0, isPriority);
+    }
+
+    public void enqueue(Client newClient) {
+        linkedList.addNode(newClient, 0);
+        if (linkedList.getLength() > 20)
+            linkedList.removeNodeAt(linkedList.getLength() - 1);
+    }
+
+    public Client dequeue() {
+        return linkedList.removeNodeAt(linkedList.getLength() - 1);
     }
 
     public String peek() {

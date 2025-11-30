@@ -10,13 +10,18 @@ public class MyLinkedList {
         this.length = 0;
     }
 
-    public MyLinkedList(Client firstClient) {
-        this.head = firstClient;
-        this.length = 1;
-    }
-
     public int getLength () {
-        return length;
+
+        Client current = head;
+        int counter = 0;
+
+        while (current != null) {
+            counter++;
+            current = current.next;
+        }
+
+        length = counter;
+        return counter;
     }
 
     public Client getNodeAt (int pos) {
@@ -43,11 +48,11 @@ public class MyLinkedList {
     }
 
     public boolean isEmpty () {
-        return length == 0;
+        return getLength() == 0;
     }
 
-    public void addNode (String newName) {
-        Client newClient = new Client(newName);
+    public void addNode (String newName, boolean isPriority) {
+        Client newClient = new Client(newName, isPriority);
 
         if (isEmpty()) {
             head = newClient;
@@ -59,11 +64,27 @@ public class MyLinkedList {
         length++;
     }
 
-    public void addNode (String newName, int pos) {
+    public void addNode (String newName, int pos, boolean isPriority) {
         if (pos < 0 || pos > length)
             throw new IllegalArgumentException("Posição inválida.");
 
-        Client newClient = new Client(newName);
+        Client newClient = new Client(newName, isPriority);
+
+        if (pos == 0) {
+            newClient.next = head;
+            head = newClient;
+        } else {
+            Client previousClient = getNodeAt(pos - 1);
+            newClient.next = previousClient.next;
+            previousClient.next = newClient;
+        }
+
+        length++;
+    }
+
+    public void addNode (Client newClient, int pos) {
+        if (pos < 0 || pos > length)
+            throw new IllegalArgumentException("Posição inválida.");
 
         if (pos == 0) {
             newClient.next = head;
